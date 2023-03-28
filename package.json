@@ -7,24 +7,15 @@
     "start:dev": "tsx watch src/server.ts",
     "build": "tsup src  --out-dir build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CharlesPereira1/treine-gym-api.git"
-  },
   "keywords": [],
   "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/CharlesPereira1/treine-gym-api/issues"
+  "dependencies": {
+    "fastify": "^4.15.0"
   },
-  "homepage": "https://github.com/CharlesPereira1/treine-gym-api#readme",
   "devDependencies": {
     "@types/node": "^18.15.11",
     "tsup": "^6.7.0",
     "tsx": "^3.12.6",
     "typescript": "^5.0.2"
-  },
-  "dependencies": {
-    "fastify": "^4.15.0"
   }
 }
