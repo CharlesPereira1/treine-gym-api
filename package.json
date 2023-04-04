@@ -9,7 +9,9 @@
     "build": "tsup src  --out-dir build",
     "docker:start": "docker compose up -d",
     "docker:stop": "docker compose stop",
-    "docker:delete": "docker compose down"
+    "docker:delete": "docker compose down",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +31,8 @@
     "prisma": "4.12.0",
     "tsup": "6.7.0",
     "tsx": "3.12.6",
-    "typescript": "5.0.2"
+    "typescript": "5.0.2",
+    "vite-tsconfig-paths": "4.0.8",
+    "vitest": "0.29.8"
   }
 }
