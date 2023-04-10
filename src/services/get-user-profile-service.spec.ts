@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { expect, describe, it, beforeEach } from 'vitest'
 import { hash } from 'bcryptjs'
 
