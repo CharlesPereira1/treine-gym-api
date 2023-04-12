@@ -59,12 +59,11 @@ describe('Check-in Service', () => {
 
     vi.setSystemTime(new Date(2022, 3, 4, 21, 0, 0))
 
-    expect(
-      async () =>
-        await sut.execute({
-          gymId: 'gym-01',
-          userId: 'user-01',
-        })
-    ).resolves.toBeTruthy()
+    const { checkIn } = await sut.execute({
+      gymId: 'gym-01',
+      userId: 'user-01',
+    })
+
+    expect(checkIn.id).toEqual(expect.any(String))
   })
 })
