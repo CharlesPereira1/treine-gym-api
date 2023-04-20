@@ -25,7 +25,7 @@ describe('Fetch Check-in History Service', () => {
     })
 
     const { checkIns } = await sut.execute({
-      userId: 'gym-01',
+      userId: 'user-01',
       page: 1,
     })
 
@@ -45,7 +45,7 @@ describe('Fetch Check-in History Service', () => {
     }
 
     const { checkIns } = await sut.execute({
-      userId: 'gym-01',
+      userId: 'user-01',
       page: 2,
     })
 
