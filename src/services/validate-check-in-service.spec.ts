@@ -1,8 +1,9 @@
-import { expect, describe, it, beforeEach } from 'vitest'
+import { expect, describe, it, beforeEach, afterEach, vi } from 'vitest'
 
 import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
 import { ValidateCheckInService } from './validate-check-in-service'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
+import { LateCheckInvalidationError } from './errors/late-check-in-validation-error'
 
 let checkInsRepository: InMemoryCheckInsRepository
 let sut: ValidateCheckInService
@@ -12,12 +13,12 @@ describe('Validate Check-in Service', () => {
     checkInsRepository = new InMemoryCheckInsRepository()
     sut = new ValidateCheckInService(checkInsRepository)
 
-    // vi.useFakeTimers()
+    vi.useFakeTimers()
   })
 
-  // afterEach(() => {
-  //   vi.useRealTimers()
-  // })
+  afterEach(() => {
+    vi.useRealTimers()
+  })
 
   it('should be able to validate the check-in', async () => {
     const createdCheckIn = await checkInsRepository.create({
@@ -32,11 +33,31 @@ describe('Validate Check-in Service', () => {
     expect(checkIn.validated_at).toEqual(expect.any(Date))
     expect(checkInsRepository.items[0].validated_at).toEqual(expect.any(Date))
   })
+
   it('should not be able to validate an inexistent check-in', async () => {
     expect(async () => {
       await sut.execute({
         checkInId: 'inexistent-check-in-id',
       })
     }).rejects.toBeInstanceOf(ResourceNotFoundError)
+  })
+
+  it('shoud not be able to validate the check-in after 20min of its creation', async () => {
+    vi.setSystemTime(new Date(2023, 3, 27, 13, 40))
+
+    const createdCheckIn = await checkInsRepository.create({
+      gym_id: 'gym-01',
+      user_id: 'user_01',
+    })
+
+    const twentyOneMinutesInMs = 1000 * 60 * 21
+
+    vi.advanceTimersByTime(twentyOneMinutesInMs)
+
+    expect(async () => {
+      await sut.execute({
+        checkInId: createdCheckIn.id,
+      })
+    }).rejects.toBeInstanceOf(LateCheckInvalidationError)
   })
 })
