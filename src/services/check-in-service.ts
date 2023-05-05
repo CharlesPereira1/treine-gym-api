@@ -19,7 +19,7 @@ interface CheckInServiceResponse {
 }
 
 const MAX_DISTANCE_IN_KILOMETERS = 0.1
-export class CheckInServiceService {
+export class CheckInService {
   constructor(
     private checkInsRepository: CheckInsRepository,
     private gymsRepository: GymsRepository
