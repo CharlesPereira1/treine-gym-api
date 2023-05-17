@@ -1,8 +1,11 @@
+import { PrismaClient } from '@prisma/client'
 import 'dotnev/config'
 import { execSync } from 'node:child_process'
 
 import { randomUUID } from 'node:crypto'
 import { Environment } from 'vitest'
+
+const prisma = new PrismaClient()
 
 function generateDatabaseURL(schema: string) {
   if (!process.env.DATABASE_URL) {
@@ -28,7 +31,11 @@ export default <Environment>{
 
     return {
       async teardown() {
-        console.log('Teardown')
+        await prisma.$executeRawUnsafe(
+          `DROP SCHEMA IF EXISTS "${schema}" CASCADE`
+        )
+
+        await prisma.$disconnect()
       },
     }
   },
